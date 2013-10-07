@@ -7,7 +7,7 @@ No UI is provided.
 Json over HTTP API.
 
 Current API is:
-signup,\n
+signup,
 login,
 user,
 follow,
