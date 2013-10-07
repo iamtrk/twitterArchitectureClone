@@ -3,6 +3,8 @@
 var mongoose   =  new  require('mongoose');
 var bcrypt     =  new  require('bcrypt-nodejs');
 var ObjectId   =  require('mongoose').Types.ObjectId;
+var redis      =  new  require('redis');
+var client     =  redis.createClient();
 
 var userSchema = mongoose.Schema({
 
@@ -109,6 +111,7 @@ var commentsSchema = mongoose.Schema({
     exports.comment = function(req,callback){
     var conn = mongoose.createConnection('mongodb://localhost/local');
     var commenting = conn.model('comments',commentsSchema);
+    var users     = conn.model('user',userSchema);
     var comment = new commenting();
     comment.body = req.param('body');
     comment.author = req.param('author_id');
@@ -126,8 +129,22 @@ var commentsSchema = mongoose.Schema({
                 if(err) callback(err);
             });
         }
+
+    var users     = conn.model('user',userSchema);
+    users.find({'_id':ObjectId(req.param('author_id'))},function(err,user){
+        console.log(user)
+            if(err) {
+                onErr(err,callback);
+            } else {
+                user = JSON.stringify(user);
+                user = JSON.parse(user)[0];
+                for(var i=0;i<user.followers.length;i++){
+                client.lpush(user.followers[i],comment.id);
+                mongoose.disconnect()
+                }
+        }});
     callback("",comment.id);
-    mongoose.disconnect()
+
 }
 
     exports.commentsByAnUser  = function(req, callback){
@@ -174,13 +191,23 @@ var commentsSchema = mongoose.Schema({
     var conn = mongoose.createConnection('mongodb://localhost/local');
     var essage = conn.model('user',userSchema);
     essage.update({'_id':ObjectId(req.param('master_id'))},{$push:{'followers':req.param('slave_id')}},function(err){
-        if(err) callback(err);
+        if(err){
+            console.log("Error 1st "+err)
+            callback(err);}
+        else {
+            essage.update({'_id':ObjectId(req.param('slave_id'))},{$push:{'following':req.param('master_id')}},function(err){
+                if(err) {
+                    console.log("Error 2nd "+err)
+                    callback(err);}
+                  else {
+                    mongoose.disconnect()
+                    callback("",true)
+                }
+            });
+        }
     });
-    essage.update({'_id':ObjectId(req.param('slave_id'))},{$push:{'following':req.param('master_id')}},function(err){
-        if(err) callback(err);
-    });
-    mongoose.disconnect()
-    callback("",true)
+
+
 
 }
 
