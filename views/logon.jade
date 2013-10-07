@@ -1,0 +1,25 @@
+extends layout
+block content
+    h1= title
+    p Welcome to #{title}
+
+div
+    form(action='/signup',method='post')
+        div(data-role='fieldcontain')
+            fieldset(data-role='controlgroup')
+                label(for='email') email
+                    input(id='email',type='text',value='',placeholder='@',name='email')
+        div#passworddiv(data-role='fieldcontain')
+            fieldset(data-role='controlgroup')
+                label(for='password') password
+                    input(id='password',type='password',value='',placeholder='',name='password')
+        div(id='hiddendiv',data-role='fieldcontain')
+            fieldset(data-role='controlgroup')
+                label(for='hidden_password') password
+                    input(id='hidden_password',type='text',value='',placeholder='',name='password2')
+        div(data-role='fieldcontain')
+            fieldset(data-type='vertical', data-role='controlgroup')
+                label(for='showpass') show password
+                input(id='showpass',type='checkbox')
+        div(data-role='fieldcontain')
+            input(type='submit',value='Sign Up',data-transition='fade', data-theme='c')
