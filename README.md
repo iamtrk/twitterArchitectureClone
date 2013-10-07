@@ -1,4 +1,4 @@
-fitness-fantasy
+twitterClone
 ===============
 This is a twitter like prototyped application built on Node.JS , MongoDB & Mongoose.
 
@@ -7,7 +7,7 @@ No UI is provided.
 Json over HTTP API.
 
 Current API is:
-signup,
+signup,\n
 login,
 user,
 follow,
