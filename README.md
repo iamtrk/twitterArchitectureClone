@@ -1,6 +1,6 @@
 twitterClone
 ===============
-This is a twitter like prototyped application built on Node.JS , MongoDB & Mongoose.
+This is a twitter like prototyped application built on Node.JS , MongoDB REDIS & Mongoose.
 
 No UI is provided.
 
@@ -16,7 +16,8 @@ comment,
 likecomment,
 unlikecomment,
 mycomments,
-myposts.
+myposts,
+myhome.
 
 
 
