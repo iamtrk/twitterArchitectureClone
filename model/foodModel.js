@@ -3,6 +3,7 @@
 var mongoose   =  new  require('mongoose');
 var bcrypt     =  new  require('bcrypt-nodejs');
 var ObjectId   =  require('mongoose').Types.ObjectId;
+var async      =  require('async')
 var redis      =  new  require('redis');
 var client     =  redis.createClient();
 
@@ -139,13 +140,46 @@ var commentsSchema = mongoose.Schema({
                 user = JSON.stringify(user);
                 user = JSON.parse(user)[0];
                 for(var i=0;i<user.followers.length;i++){
-                client.lpush(user.followers[i],comment.id);
+                client.LPUSH(user.followers[i],comment.id);
                 mongoose.disconnect()
                 }
         }});
     callback("",comment.id);
 
 }
+   exports.myHome = function(req,callback){
+       var conn = mongoose.createConnection('mongodb://localhost/local');
+       var commenting = conn.model('comments',commentsSchema);
+       var wallComments = []
+       client.LRANGE(req.param('author_id'),0,-1,function(err,comments){
+           async.forEach(comments,function(comment,callback){
+           commenting.find({'_id':ObjectId(comment)},function(err,comment){
+                   console.log(comment)
+                   if(err) {
+                       onErr(err,callback);
+                   }
+                   else {
+                       wallComments.push(comment[0])
+                   }
+                   callback("",wallComments)
+               })
+
+           },function(err){
+               if(err) callback(err)
+               else callback(err,wallComments)
+           })
+          /* comments.forEach(function(comment,i){
+           commenting.find({'_id':ObjectId(comment)},function(err,comment){
+                   console.log(comment)
+                   if(err) {
+                       onErr(err,callback);
+                   } else {
+                   wallComments.push(comment[0])
+                   }})
+           });    */
+
+       })
+   }
 
     exports.commentsByAnUser  = function(req, callback){
     var conn = mongoose.createConnection('mongodb://localhost/local');

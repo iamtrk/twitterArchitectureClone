@@ -40,6 +40,7 @@ app.post('/mycomments',foodRoutes.commentsByAnUser)
 app.post('/likecomment',foodRoutes.likeComment)
 app.post('/unlikecomment',foodRoutes.unlikeComment)
 app.post('/follow',foodRoutes.follow)
+app.post('/myhome',foodRoutes.myHome)
 
 
 

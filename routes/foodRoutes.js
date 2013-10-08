@@ -54,7 +54,18 @@ var foodModel = require('../model/foodModel')
         else
             res.json({isSuccess:name})
     });
-}
+     }
+
+    exports.myHome = function(req,res){
+    foodModel.myHome(req, function(err,wallComments){
+        if(err){
+            res.json({isSuccess:false})
+        }
+        else {
+            res.json({myWall:wallComments})
+        }
+    })
+    }
 
     exports.commentsByAnUser = function(req,res){
     foodModel.commentsByAnUser(req, function(err,comments){
@@ -91,6 +102,7 @@ var foodModel = require('../model/foodModel')
     exports.follow= function(req,res){
     foodModel.follow(req, function(err,name){
         if(err){
+            console.log(err)
             res.json({isSuccess:false});
         }
         else
