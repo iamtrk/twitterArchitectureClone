@@ -1,5 +1,4 @@
 
-
 var mongoose   =  new  require('mongoose');
 var bcrypt     =  new  require('bcrypt-nodejs');
 var ObjectId   =  require('mongoose').Types.ObjectId;
