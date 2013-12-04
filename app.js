@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -7,7 +6,7 @@ var express = new require('express')
   , routes = require('./routes')
   , logon = require('./routes/logon')
   , user = require('./routes/user')
-  , foodRoutes = require('./routes/foodRoutes')
+  , userRoutes = require('./routes/userRoutes')
   , http = require('http')
   , path = require('path')
   , fs   = require('fs');
@@ -31,16 +30,16 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.post('/user',foodRoutes.userById)
-app.post('/post',foodRoutes.post)
-app.post('/signup',foodRoutes.userSignup)
-app.post('/login',foodRoutes.userLogin)
-app.post('/comment',foodRoutes.comment)
-app.post('/mycomments',foodRoutes.commentsByAnUser)
-app.post('/likecomment',foodRoutes.likeComment)
-app.post('/unlikecomment',foodRoutes.unlikeComment)
-app.post('/follow',foodRoutes.follow)
-app.post('/myhome',foodRoutes.myHome)
+app.post('/user',userRoutes.userById)
+app.post('/post',userRoutes.post)
+app.post('/signup',userRoutes.userSignup)
+app.post('/login',userRoutes.userLogin)
+app.post('/comment',userRoutes.comment)
+app.post('/mycomments',userRoutes.commentsByAnUser)
+app.post('/likecomment',userRoutes.likeComment)
+app.post('/unlikecomment',userRoutes.unlikeComment)
+app.post('/follow',userRoutes.follow)
+app.post('/myhome',userRoutes.myHome)
 
 
 
