@@ -1,5 +1,5 @@
 var util = require('util')
-var foodModel = require('../model/foodModel')
+var foodModel = require('../model/userModel')
 
     exports.userSignup= function(req,res){
     foodModel.userSignup(req, function(err,name){
